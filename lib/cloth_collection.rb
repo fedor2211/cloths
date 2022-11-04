@@ -1,6 +1,8 @@
 require_relative "cloth"
 
 class ClothCollection
+  attr_reader :categories
+
   def self.from_files(files)
     cloths = files.map do |file|
       cloth_data = File.readlines(file, chomp: true)
@@ -19,13 +21,13 @@ class ClothCollection
     @categories = @cloths.map(&:category).uniq
   end
 
-  def cloths_by_category(category)
+  def by_category(category)
     @cloths.select { |cloth| cloth.category == category }
   end
 
   def cloth_set_for_temp(temp)
     set = @categories.map do |category|
-      cloths_by_category(category)
+      by_category(category)
         .select { |cloth| cloth.suits_for_temp?(temp) }
         .sample
     end
