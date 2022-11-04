@@ -1,4 +1,4 @@
-require_relative "cloth"
+require_relative 'cloth'
 
 class ClothCollection
   attr_reader :categories
@@ -26,11 +26,10 @@ class ClothCollection
   end
 
   def cloth_set_for_temp(temp)
-    set = @categories.map do |category|
+    @categories.map do |category|
       by_category(category)
-        .select { |cloth| cloth.suits_for_temp?(temp) }
+        .filter_map { |cloth| cloth if cloth.suits_for_temp?(temp) }
         .sample
     end
-    set.compact
   end
 end
