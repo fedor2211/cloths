@@ -1,9 +1,40 @@
+require 'cloth'
 require 'cloth_collection'
 
 describe ClothCollection do
   let(:cloth_collection) do
-    files = Dir[File.join(__dir__, 'fixtures', 'clothes', '*.txt')]
-    ClothCollection.from_files(files)
+    clothes = [
+      ["Шерстяная шапка", "Головной убор", -28..-5],
+      ["Пуховик", "Верхняя одежда", -28..-5],
+      ["Сандали", "Обувь", 20..40],
+      ["Валенки", "Обувь", -30..-5],
+      ["Кепка", "Головной убор", 10..40],
+      ["Ветровка", "Верхняя одежда", 5..20],
+      ["Демисезонная куртка", "Верхняя одежда", -5..5],
+      ["Кроссовки", "Обувь", -5..20],
+      ["Джинсы", "Штаны", -5..20],
+      ["Льняные штаны", "Штаны", 15..40],
+      ["Утеплённые штаны", "Штаны", -30..-5]
+    ].map do |data|
+      Cloth.new(
+        name:data[0],
+        category: data[1],
+        temp_range: data[2]
+      )
+    end
+    ClothCollection.new(clothes)
+  end
+  
+  describe '#from_file' do
+    let(:data_files) { Dir[File.join(__dir__, "fixtures", "clothes", "*.txt")] }
+
+    context 'when cloths load correctly from files' do
+      it 'returns true' do
+        expect(
+          ClothCollection.from_files(data_files).to_s
+        ).to eq cloth_collection.to_s
+      end
+    end
   end
 
   describe '#by_category' do

@@ -9,7 +9,7 @@ class ClothCollection
       low, high = cloth_data[2].scan(/[+-]?\d+/).first(2).map(&:to_i)
       Cloth.new(
         name: cloth_data[0],
-        category: cloth_data[1].to_sym,
+        category: cloth_data[1],
         temp_range: low..high
       )
     end
@@ -26,10 +26,14 @@ class ClothCollection
   end
 
   def cloth_set_for_temp(temp)
-    @categories.map do |category|
+    @categories.filter_map do |category|
       by_category(category)
-        .filter_map { |cloth| cloth if cloth.suits_for_temp?(temp) }
+        .select { |cloth| cloth.suits_for_temp?(temp) }
         .sample
     end
+  end
+  
+  def to_s
+    @cloths.map(&:to_s)
   end
 end
