@@ -32,8 +32,8 @@ class ClothCollection
         .sample
     end
   end
-  
+
   def to_s
-    @cloths.map(&:to_s)
+    @cloths.map(&:to_s).to_s
   end
 end
